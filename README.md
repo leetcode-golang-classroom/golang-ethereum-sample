@@ -77,3 +77,38 @@ ETH_JSON_RPC_URL=http://localhost:8545
 	balanceEther := new(big.Float).Quo(fBalance, big.NewFloat(math.Pow10(18)))
 	fmt.Println("address:", config.AppConfig.EthAddress, "has", balanceEther, "ether")
 ```
+
+## wallet concept
+
+![wallet-address](wallet-address.png)
+
+## write logic to generate private key, public key and address
+
+```golang
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/ethereum/go-ethereum/crypto"
+)
+
+func main() {
+	pvk, err := crypto.GenerateKey()
+	if err != nil {
+		log.Fatal(err)
+	}
+	// hex value
+	pData := crypto.FromECDSA(pvk)
+	// private key
+	fmt.Println(hexutil.Encode(pData))
+
+	pubData := crypto.FromECDSAPub(&pvk.PublicKey)
+	// public key
+	fmt.Println(hexutil.Encode(pubData))
+	// address
+	fmt.Println(crypto.PubkeyToAddress(pvk.PublicKey).Hex())
+}
+```
