@@ -8,6 +8,7 @@ import (
 
 type Config struct {
 	EthJsonRpcURL string `mapstructure:"ETH_JSON_RPC_URL"`
+	EthAddress    string `mapstructure:"ETH_ADDRESS"`
 }
 
 var AppConfig *Config
@@ -19,6 +20,7 @@ func init() {
 	v.SetConfigType("env")
 	v.AutomaticEnv()
 	failOnError(v.BindEnv("ETH_JSON_RPC_URL"), "fail on Bind ETH_JSON_RPC_URL")
+	failOnError(v.BindEnv("ETH_ADDRESS"), "fail on Bind ETH_ADDRESS")
 	err := v.ReadInConfig()
 	if err != nil {
 		log.Println("load from environment variable")
