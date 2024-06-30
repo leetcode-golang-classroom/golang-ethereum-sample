@@ -148,3 +148,47 @@ func ReadKeyFromKeyStore() {
 	fmt.Println("address:", address)
 }
 ```
+
+## make transaction concept
+
+![transaction-concept](transaction-concept.png)
+
+## implementation
+
+```golang
+func Transfer(client *ethclient.Client, sender common.Address,
+	receiver common.Address, transferAmount int64, senderPrivKey string) error {
+	nonce, err := client.PendingNonceAt(context.Background(), sender)
+	if err != nil {
+		log.Fatal(err)
+	}
+	amount := big.NewInt(transferAmount)
+	suggestGasPrice, err := client.SuggestGasPrice(context.Background())
+	if err != nil {
+		log.Fatal(err)
+	}
+	tx := types.NewTransaction(nonce, receiver, amount, 21000, suggestGasPrice, nil)
+	chainId, err := client.NetworkID(context.Background())
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	prvKey, err := crypto.HexToECDSA(senderPrivKey)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainId), prvKey)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	err = client.SendTransaction(context.Background(), signedTx)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	fmt.Printf("tx send: %s\n", signedTx.Hash().Hex())
+	return nil
+}
+```

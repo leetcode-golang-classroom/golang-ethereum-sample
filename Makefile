@@ -9,6 +9,9 @@ build-wallet:
 build-keystore:
 	@CGO_ENABLED=0 GOOS=linux go build -o bin/go-keystore learn/go-keystore/go-keystore.go
 
+build-transaction:
+	@CGO_ENABLED=0 GOOS=linux go build -o bin/go-transaction learn/go-transaction/go-transaction.go
+
 run-client: build-client
 	@./bin/go-client
 
@@ -17,6 +20,9 @@ run-wallet: build-wallet
 
 run-keystore: build-keystore
 	@./bin/go-keystore
+
+run-transaction: build-transaction
+	@./bin/go-transaction
 
 coverage:
 	@go test -v -cover ./...

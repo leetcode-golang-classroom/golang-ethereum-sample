@@ -11,6 +11,7 @@ type Config struct {
 	EthAddress       string `mapstructure:"ETH_ADDRESS"`
 	KeyStorePassword string `mapstructure:"KEY_STORE_PASSWORD"`
 	KeyStorefile     string `mapstructure:"KEY_STORE_FILE"`
+	SenderPriveKey   string `mapstructure:"SENDER_PRIVKEY"`
 }
 
 var AppConfig *Config
@@ -25,6 +26,7 @@ func init() {
 	failOnError(v.BindEnv("ETH_ADDRESS"), "fail on Bind ETH_ADDRESS")
 	failOnError(v.BindEnv("KEY_STORE_PASSWORD"), "fail on Bind KEY_STORE_PASSWORD")
 	failOnError(v.BindEnv("KEY_STORE_FILE"), "fail on Bind KEY_STORE_FILE")
+	failOnError(v.BindEnv("SENDER_PRIVKEY"), "fail on Bind SENDER_PRIVKEY")
 	err := v.ReadInConfig()
 	if err != nil {
 		log.Println("load from environment variable")
