@@ -19,7 +19,7 @@ func main() {
 		log.Fatal(err)
 	}
 	defer client.Close()
-	sender := common.HexToAddress("44e8c6ee2eaD166A03b93d4e2bA6F9d299f2Cf44")
+	sender := common.HexToAddress("4776d3F36a69f5Ad53858fFAa57E76A0c019f8E8")
 	receiver := common.HexToAddress("95fe3f0a532a4feb1bc92c45d447ac66ac54b4d5")
 	_, err = GetBalances(client, sender, receiver)
 	if err != nil {
