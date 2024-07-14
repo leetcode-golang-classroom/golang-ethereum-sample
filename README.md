@@ -192,3 +192,51 @@ func Transfer(client *ethclient.Client, sender common.Address,
 	return nil
 }
 ```
+
+## use remix.ethereum.org as IDE
+
+https://remix.ethereum.org/#lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.26+commit.8a97fa7a.js
+
+create solidity
+
+```solidity
+pragma solidity >=0.8.2 <0.9.0;
+
+contract Todo {
+    Task[] tasks;
+    struct Task {
+        string content;
+        bool status;
+    }
+    constructor() {
+
+    }
+    function add(string memory _content) public {
+      tasks.push(Task(_content, false));
+    }
+    function get(uint _id) public view returns (Task memory) {
+        return tasks[_id];
+    }
+    function list() public  view returns (Task[] memory) {
+        return tasks;
+    }
+    function update(uint _id, string memory _content) public {
+        tasks[_id].content = _content;
+    }
+    function remove(uint _id) public {
+        delete tasks[_id];
+    }
+}
+```
+
+test with remix vm
+
+![deploy-contract-to-vm](./deploy-contract-to-vm.png)
+
+## interact contract with public function
+
+![interact-with-public-function](./interact-with-public-function.png)
+
+## check execution log of vm on console
+
+![execution-console-log](./execution-console-log.png)
