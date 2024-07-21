@@ -240,3 +240,73 @@ test with remix vm
 ## check execution log of vm on console
 
 ![execution-console-log](./execution-console-log.png)
+
+## add permission for access check
+
+```solidity
+pragma solidity >=0.8.2 <0.9.0;
+
+contract Todo {
+    address public owner;
+    Task[] tasks;
+    struct Task {
+        string content;
+        bool status;
+    }
+    constructor() {
+        owner = msg.sender;
+    }
+    modifier isOwner() {
+        require(owner == msg.sender);
+        _;  
+    }
+    function add(string memory _content) public isOwner {
+        tasks.push(Task(_content, false));
+    }
+    function get(uint _id) public isOwner view returns (Task memory) {
+        return tasks[_id];
+    }
+    function list() public  isOwner view returns (Task[] memory) {
+        return tasks;
+    }
+    function update(uint _id, string memory _content) public isOwner{
+        tasks[_id].content = _content;
+    }
+    function remove(uint _id) public isOwner {
+        for (uint i = _id; i < tasks.length -1; i++ ) {
+            tasks[i] = tasks[i+1];
+        }
+        tasks.pop();
+    }
+}
+```
+## setup owner storage
+```solidity
+	address public owner;
+	constructor() {
+		owner = msg.sender;
+	}
+```
+the msg.sender is special key word refer contract creator
+
+owner will set to the creator of the contract
+## implement Modifier isOwner for check only allow owner execution
+
+```solidity
+	modifier isOwner() {
+			require(owner == msg.sender);
+			_;  
+	}
+```
+use the required keyword for assertion on check owner is msg.sender
+
+_ the underscope is for rest of the other code
+
+## success execution on modifier
+![success-execution-modifier](success-execution-modifier.png)
+
+## failed execution on modifier
+
+![fail-execution-modifier](fail-execution-modifier.png)
+
+[modifier-contract](https://remix.ethereum.org/#lang=en&optimize=false&runs=200&evmVersion=null&version=soljson-v0.8.26+commit.8a97fa7a.js)
